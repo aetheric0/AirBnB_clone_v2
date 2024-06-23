@@ -27,6 +27,7 @@ class FileStorage:
 
     def reload(self):
         """Loads storage dictionary from file"""
+        from os import path
         from models.base_model import BaseModel
         from models.user import User
         from models.place import Place
@@ -43,8 +44,11 @@ class FileStorage:
         try:
             temp = {}
             with open(FileStorage.__file_path, 'r') as f:
-                temp = json.load(f)
-                for key, val in temp.items():
+                if path.getsize(FileStorage.__file_path) == 0:
+                    pass
+                else:
+                    temp = json.load(f)
+                    for key, val in temp.items():
                         self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
