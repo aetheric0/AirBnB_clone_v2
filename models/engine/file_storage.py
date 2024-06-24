@@ -64,6 +64,6 @@ class FileStorage:
         else:
             objects_copy = FileStorage.__objects.copy()
             for key, value in FileStorage.__objects.items():
-                 if value.name == obj.name:
-                     del FileStorage.__objects[key]
-                     break
+                if value.name == obj.name:
+                    del FileStorage.__objects[key]
+                    break
