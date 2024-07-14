@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # Configures a new nginx server on Linux
+if [command] then;
 apt-get update
 apt-get install nginx -y
 mkdir -p /data/web_static/releases/test
