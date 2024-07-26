@@ -20,15 +20,26 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """Instantiates a new model"""
         if kwargs:
-            kwargs['updated_at'] = datetime.strptime(kwargs['updated_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            kwargs['created_at'] = datetime.strptime(kwargs['created_at'],
-                                                     '%Y-%m-%dT%H:%M:%S.%f')
-            del kwargs['__class__']
+            datetime_keys = ['created_at', 'updated_at']
+            if 'id' not in kwargs:
+                kwargs['id'] = str(uuid.uuid4())
+            if 'created_at' not in kwargs:
+                kwargs['created_at'] = datetime.now().isoformat()
+            if 'updated_at' not in kwargs:
+                kwargs['updated_at'] = datetime.now().isoformat()
+            if '__class__' in kwargs:
+                del kwargs['__class__']
+
             for key, value in kwargs.items():
+                if key in datetime_keys:
+                    value = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f')
                 if key == '_sa_instance_state':
                     del kwargs[key]
                 setattr(self, key, value)
+            else:
+                self.id = str(uuid.uuid4())
+                self.created_at = datetime.now()
+                self.updated_at = datetime.now()
 
     def __str__(self):
         """Returns a string representation of the instance"""
@@ -40,13 +51,13 @@ class BaseModel:
         """Updates updated_at with current time when instance is changed"""
         from models import storage
         self.updated_at = datetime.now()
-        storage.new()
+        storage.new(self)
         storage.save()
 
     def to_dict(self):
         """Convert instance into dict format"""
-        dictionary = {}
-        dictionary.update(self.__dict__)
+        dictionary = self.__dict__.copy()
+        dictionary.pop('_sa_instance_state', None)
         dictionary.update({'__class__':
                           (str(type(self)).split('.')[-1]).split('\'')[0]})
         dictionary['created_at'] = self.created_at.isoformat()

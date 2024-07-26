@@ -14,9 +14,9 @@ class State(BaseModel, Base):
 
     @property
     def cities(self):
-        """ Returns list of city from file storage
         """
-        from models import storage
+        """
+        from models.engine import FileStorage
         city_list = []
         for city in storage.all(City).values():
             if city.state_id == self.id:
