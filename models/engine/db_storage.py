@@ -24,8 +24,8 @@ class DBStorage():
     def __init__(self):
         self.__engine = create_engine(
             'mysql+mysqldb://{}:{}@{}/{}'.format(
-                self.mysql_user, self.mysql_pwd, self.mysql_host, self.mysql_db
-                , pool_pre_ping=True)
+                self.mysql_user, self.mysql_pwd,
+                self.mysql_host, self.mysql_db, pool_pre_ping=True)
         )
 
         if self.test_db == 'test':
@@ -45,7 +45,8 @@ class DBStorage():
 
         else:
             objs = self.__session.query(cls).all()
-        return {'{}.{}'.format(type(item).__name__, item.id): item for item in objs}
+        return {'{}.{}'.format(type(item).__name__,
+                               item.id): item for item in objs}
 
     def new(self, obj):
         """ Adds a new objects to storage and saves it
