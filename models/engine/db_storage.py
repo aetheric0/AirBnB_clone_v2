@@ -48,18 +48,26 @@ class DBStorage():
         return {'{}.{}'.format(type(item).__name__, item.id): item for item in objs}
 
     def new(self, obj):
+        """ Adds a new objects to storage and saves it
+        """
         self.__session.add(obj)
         self.save()
 
     def save(self):
+        """ Saves a new object to storage
+        """
         self.__session.commit()
 
     def delete(self, obj=None):
+        """ Deletes an object from storage
+        """
         if obj is not None:
             self.__session.delete(obj)
             self.save()
 
     def reload(self):
+        """ Loads the storage
+        """
         from sqlalchemy.orm import sessionmaker
 
         Base.metadata.create_all(self.__engine)
@@ -67,4 +75,6 @@ class DBStorage():
         self.__session = Session()
 
     def close(self):
+        """ Closes the session
+        """
         self.__session.close()

@@ -71,4 +71,6 @@ class FileStorage:
                     break
 
     def close(self):
+        """ Reloads the storage
+        """
         self.reload()
