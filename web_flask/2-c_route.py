@@ -3,6 +3,7 @@
 """
 
 from flask import Flask
+from markupsafe import escape
 
 app = Flask(__name__)
 
@@ -25,7 +26,9 @@ def hbnb():
 def c_is_fun(text):
     """ Displays "C " followed by string in <text>
     """
-    return "C {}".format(text)
+    if '_' in text:
+        text = text.replace('_', ' ')
+    return "C {}".format(escape(text))
 
 
 if __name__ == '__main__':
