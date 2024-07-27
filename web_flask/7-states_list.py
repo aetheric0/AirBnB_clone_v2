@@ -8,7 +8,7 @@ from models.state import State
 app = Flask(__name__)
 
 
-@app.route('/states_list/', strict_slashes=False)
+@app.route('/states_list', strict_slashes=False)
 def states_list():
     """ Retrieves the states table and sorts the data in it for rendering
     """
