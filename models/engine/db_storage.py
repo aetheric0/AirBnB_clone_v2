@@ -44,6 +44,8 @@ class DBStorage():
 #            objs.extend(self.__session.query(Amenity).all())
 
         else:
+            if type(cls) is str:
+                cls = eval(cls)
             objs = self.__session.query(cls).all()
         return {'{}.{}'.format(type(item).__name__,
                                item.id): item for item in objs}
