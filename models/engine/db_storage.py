@@ -36,12 +36,12 @@ class DBStorage():
         Returns a dictionary of all the objects in the database
         """
         if cls is None:
-            objs = self.__session.query(State).all()
+            objs = self.__session.query(User).all()
+            objs.extend(self.__session.query(State).all())
             objs.extend(self.__session.query(City).all())
-            objs.extend(self.__session.query(User).all())
+#            objs.extend(self.__session.query(Amenity).all())
             objs.extend(self.__session.query(Place).all())
 #            objs.extend(self.__session.query(Review).all())
-#            objs.extend(self.__session.query(Amenity).all())
 
         else:
             if type(cls) is str:
@@ -71,10 +71,12 @@ class DBStorage():
     def reload(self):
         """ Loads the storage
         """
-        from sqlalchemy.orm import sessionmaker
+        from sqlalchemy.orm import sessionmaker, scoped_session
 
         Base.metadata.create_all(self.__engine)
-        Session = sessionmaker(bind=self.__engine, expire_on_commit=False)
+        session_factory = sessionmaker(bind=self.__engine,
+                                       expire_on_commit=False)
+        Session = scoped_session(session_factory)
         self.__session = Session()
 
     def close(self):
