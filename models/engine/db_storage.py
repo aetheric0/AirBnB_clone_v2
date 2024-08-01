@@ -6,6 +6,7 @@ from models.city import City
 from models.state import State
 from models.user import User
 from models.place import Place
+from models.review import Review
 from models.amenity import Amenity
 from sqlalchemy import create_engine, text, Column
 from sqlalchemy.orm import sessionmaker
@@ -41,7 +42,7 @@ class DBStorage():
             objs.extend(self.__session.query(City).all())
 #            objs.extend(self.__session.query(Amenity).all())
             objs.extend(self.__session.query(Place).all())
-#            objs.extend(self.__session.query(Review).all())
+            objs.extend(self.__session.query(Review).all())
 
         else:
             if type(cls) is str:
