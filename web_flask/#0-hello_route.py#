@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+!/usr/bin/python3
 """ Module using flask to print Hello message
 """
 from flask import Flask
